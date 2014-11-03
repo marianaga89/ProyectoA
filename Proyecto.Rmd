@@ -190,6 +190,15 @@ output: pdf_document
   datosmg$total<-as.numeric(gsub(" ","",datosmg$total))
   
   ```
+Gráficas mes general
+```{r}
+datosprmesf<-datosmf%>% gather(variable,valor,3:14)
+boxplot(valor~variable,data=datosprmesf,main="Piquetes vs Meses - Femenino de todos los años",ylab="Número de piquetes",xlab="Meses",col="hotpink",varwigth=TRUE, outline = FALSE)
+datosprmesm<-datosmm%>% gather(variable,valor,3:14)
+boxplot(valor~variable,data=datosprmesm,main="Piquetes vs Meses - Masculino de todos los años",ylab="Número de piquetes",xlab="Meses",col="deepskyblue2",varwigth=TRUE, outline = FALSE)
+datosprmesg<-datosmg%>% gather(variable,valor,3:14)
+boxplot(valor~variable,data=datosprmesg,main="Piquetes vs Meses - General de todos los años",ylab="Número de piquetes",xlab="Meses",col="green",varwigth=TRUE, outline = FALSE)
+```
   ```{r}
   head(datosmf)
   head(datosmm)
@@ -215,7 +224,7 @@ fuentefem2012 <- read.csv("~/CVS/Fuente/fuentefem2012.csv", stringsAsFactors=FAL
 fuentefem2013 <- read.csv("~/CVS/Fuente/fuentefem2013.csv", stringsAsFactors=FALSE,na.strings="#N/A")
 ```
 En lo datos encontramos fuentes que no están presentes en algunos estados, IMSS-op, DIF, PEMEX, SEDENA, SEMAR y Otras, pero estás se muestra a partir del 2007.
-Cambiamos los estado en lo que no está presente la fuente por NA, para después cambiarlo por el promedio.
+Cambiamos los estado en lo que no está presente la fuente por NA.
 En este caso los datos 0 sí signifcan algo, es por ello que no todo los ceros son datos faltantes.
 ```{r,echo=FALSE}
 #IMSS
@@ -643,4 +652,169 @@ datosfg$total<-as.numeric(gsub(" ","",datosfg$total))
 head(datosff)
 head(datosfm)
 head(datosfg)
+```
+DATOS POR EDAD 
+GENERAL
+
+```{r, echo=FALSE}
+edadgral2003 <- read.csv("~/CVS/Edad/edadgral2003.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+edadgral2004 <- read.csv("~/CVS/Edad/edadgral2004.csv", stringsAsFactors=FALSE, na.strings="#N/A")
+edadgral2005 <- read.csv("~/CVS/Edad/edadgral2005.csv", stringsAsFactors=FALSE, na.strings="#N/A")
+edadgral2006 <- read.csv("~/CVS/Edad/edadgral2006.csv", stringsAsFactors=FALSE, na.strings="#N/A")
+edadgral2007 <- read.csv("~/CVS/Edad/edadgral2007.csv", stringsAsFactors=FALSE, na.strings="#N/A")
+edadgral2008 <- read.csv("~/CVS/Edad/edadgral2008.csv", stringsAsFactors=FALSE, na.strings="#N/A")
+edadgral2009 <- read.csv("~/CVS/Edad/edadgral2009.csv", stringsAsFactors=FALSE, na.strings="#N/A")
+edadgral2010 <- read.csv("~/CVS/Edad/edadgral2010.csv", stringsAsFactors=FALSE, na.strings="#N/A")
+edadgral2011 <- read.csv("~/CVS/Edad/edadgral2011.csv", stringsAsFactors=FALSE, na.strings="#N/A")
+edadgral2012 <- read.csv("~/CVS/Edad/edadgral2012.csv", stringsAsFactors=FALSE, na.strings="#N/A")
+edadgral2013 <- read.csv("~/CVS/Edad/edadgral2013.csv", stringsAsFactors=FALSE, na.strings="#N/A")
+#######################################
+lista<-list(edadgral2003, edadgral2004, edadgral2005, edadgral2006, edadgral2007, edadgral2008, edadgral2009, edadgral2010,edadgral2011, edadgral2012, edadgral2013)
+datoseg<-ldply(lista,data.frame)
+periodo<-c()
+for(i in 2003:2013){
+  for(j in 1:33){
+    periodo<-c(periodo,i)
+  }
+  
+}
+
+datoseg$periodo<-as.factor(periodo)
+
+names(datoseg)<-gsub("X..1","<1",names(datoseg))
+names(datoseg)<-gsub("X1...4","1-4",names(datoseg))
+names(datoseg)<-gsub("X5...9","5-9",names(datoseg))
+names(datoseg)<-gsub("X10...14","10-14",names(datoseg))
+names(datoseg)<-gsub("X15...19","15-19",names(datoseg))
+names(datoseg)<-gsub("X20...24","20-24",names(datoseg))
+names(datoseg)<-gsub("X25...44","25-44",names(datoseg))
+names(datoseg)<-gsub("X45...49","45-49",names(datoseg))
+names(datoseg)<-gsub("X50...59","50-59",names(datoseg))
+names(datoseg)<-gsub("X60...64","60-64",names(datoseg))
+names(datoseg)<-gsub("X65.y..","65+",names(datoseg))
+
+datoseg$"<1" <-as.numeric(gsub(" ","",datoseg$"<1"))
+datoseg$"1-4"<-as.numeric(gsub(" ","",datoseg$"1-4"))
+datoseg$"5-9"<-as.numeric(gsub(" ","",datoseg$"5-9"))
+datoseg$"10-14"<-as.numeric(gsub(" ","",datoseg$"10-14"))
+datoseg$"15-19"<-as.numeric(gsub(" ","",datoseg$"15-19"))
+datoseg$"20-24"<-as.numeric(gsub(" ","",datoseg$"20-24"))
+datoseg$"25-44"<-as.numeric(gsub(" ","",datoseg$"25-44"))
+datoseg$"45-49"<-as.numeric(gsub(" ","",datoseg$"45-49"))
+datoseg$"50-59"<-as.numeric(gsub(" ","",datoseg$"50-59"))
+datoseg$"60-64"<-as.numeric(gsub(" ","",datoseg$"60-64"))
+datoseg$"65+"<-as.numeric(gsub(" ","",datoseg$"65+"))
+datoseg$Total<-as.numeric(gsub(" ","",datoseg$Total))
+```
+FEMENINO
+```{r,echo=FALSE}
+edadfem2003 <- read.csv("~/CVS/Edad/edadfem2003.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+edadfem2004 <- read.csv("~/CVS/Edad/edadfem2004.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+edadfem2005 <- read.csv("~/CVS/Edad/edadfem2005.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+edadfem2006 <- read.csv("~/CVS/Edad/edadfem2006.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+edadfem2007 <- read.csv("~/CVS/Edad/edadfem2007.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+edadfem2008 <- read.csv("~/CVS/Edad/edadfem2008.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+edadfem2009 <- read.csv("~/CVS/Edad/edadfem2009.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+edadfem2010 <- read.csv("~/CVS/Edad/edadfem2010.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+edadfem2011 <- read.csv("~/CVS/Edad/edadfem2011.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+edadfem2012 <- read.csv("~/CVS/Edad/edadfem2012.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+edadfem2013 <- read.csv("~/CVS/Edad/edadfem2013.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+###############
+lista<-list(edadfem2003, edadfem2004, edadfem2005, edadfem2006, edadfem2007, edadfem2008, edadfem2009, edadfem2010,edadfem2011, edadfem2012, edadfem2013)
+datosef<-ldply(lista,data.frame)
+periodo<-c()
+for(i in 2003:2013){
+  for(j in 1:33){
+    periodo<-c(periodo,i)
+  }
+  
+}
+
+datosef$periodo<-as.factor(periodo)
+
+names(datosef)<-gsub("X..1","<1",names(datosef))
+names(datosef)<-gsub("X1...4","1-4",names(datosef))
+names(datosef)<-gsub("X5...9","5-9",names(datosef))
+names(datosef)<-gsub("X10...14","10-14",names(datosef))
+names(datosef)<-gsub("X15...19","15-19",names(datosef))
+names(datosef)<-gsub("X20...24","20-24",names(datosef))
+names(datosef)<-gsub("X25...44","25-44",names(datosef))
+names(datosef)<-gsub("X45...49","45-49",names(datosef))
+names(datosef)<-gsub("X50...59","50-59",names(datosef))
+names(datosef)<-gsub("X60...64","60-64",names(datosef))
+names(datosef)<-gsub("X65.y..","65+",names(datosef))
+
+datosef$"<1" <-as.numeric(gsub(" ","",datosef$"<1"))
+datosef$"1-4"<-as.numeric(gsub(" ","",datosef$"1-4"))
+datosef$"5-9"<-as.numeric(gsub(" ","",datosef$"5-9"))
+datosef$"10-14"<-as.numeric(gsub(" ","",datosef$"10-14"))
+datosef$"15-19"<-as.numeric(gsub(" ","",datosef$"15-19"))
+datosef$"20-24"<-as.numeric(gsub(" ","",datosef$"20-24"))
+datosef$"25-44"<-as.numeric(gsub(" ","",datosef$"25-44"))
+datosef$"45-49"<-as.numeric(gsub(" ","",datosef$"45-49"))
+datosef$"50-59"<-as.numeric(gsub(" ","",datosef$"50-59"))
+datosef$"60-64"<-as.numeric(gsub(" ","",datosef$"60-64"))
+datosef$"65+"<-as.numeric(gsub(" ","",datosef$"65+"))
+datosef$Total<-as.numeric(gsub(" ","",datosef$Total))
+```
+MASCULINO
+```{r, echo=FALSE}
+edadmasc2003 <- read.csv("~/CVS/Edad/edadmasc2003.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+edadmasc2004 <- read.csv("~/CVS/Edad/edadmasc2004.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+edadmasc2005 <- read.csv("~/CVS/Edad/edadmasc2005.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+edadmasc2006 <- read.csv("~/CVS/Edad/edadmasc2006.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+edadmasc2007 <- read.csv("~/CVS/Edad/edadmasc2007.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+edadmasc2008 <- read.csv("~/CVS/Edad/edadmasc2008.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+edadmasc2009 <- read.csv("~/CVS/Edad/edadmasc2009.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+edadmasc2010 <- read.csv("~/CVS/Edad/edadmasc2010.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+edadmasc2011 <- read.csv("~/CVS/Edad/edadmasc2011.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+edadmasc2012 <- read.csv("~/CVS/Edad/edadmasc2012.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+edadmasc2013 <- read.csv("~/CVS/Edad/edadmasc2013.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+##############################
+lista<-list(edadmasc2003, edadmasc2004, edadmasc2005, edadmasc2006, edadmasc2007, edadmasc2008, edadmasc2009, edadmasc2010,edadmasc2011, edadmasc2012, edadmasc2013)
+datosem<-ldply(lista,data.frame)
+periodo<-c()
+for(i in 2003:2013){
+  for(j in 1:32){
+    periodo<-c(periodo,i)
+  }
+  
+}
+
+datosem$periodo<-as.factor(periodo)
+
+names(datosem)<-gsub("X..1","<1",names(datosem))
+names(datosem)<-gsub("X1...4","1-4",names(datosem))
+names(datosem)<-gsub("X5...9","5-9",names(datosem))
+names(datosem)<-gsub("X10...14","10-14",names(datosem))
+names(datosem)<-gsub("X15...19","15-19",names(datosem))
+names(datosem)<-gsub("X20...24","20-24",names(datosem))
+names(datosem)<-gsub("X25...44","25-44",names(datosem))
+names(datosem)<-gsub("X45...49","45-49",names(datosem))
+names(datosem)<-gsub("X50...59","50-59",names(datosem))
+names(datosem)<-gsub("X60...64","60-64",names(datosem))
+names(datosem)<-gsub("X65.y..","65+",names(datosem))
+
+datosem$periodo<-as.factor(periodo)
+datosem$"<1" <-as.numeric(gsub(" ","",datosem$"<1"))
+datosem$"1-4"<-as.numeric(gsub(" ","",datosem$"1-4"))
+datosem$"5-9"<-as.numeric(gsub(" ","",datosem$"5-9"))
+datosem$"10-14"<-as.numeric(gsub(" ","",datosem$"10-14"))
+datosem$"15-19"<-as.numeric(gsub(" ","",datosem$"15-19"))
+datosem$"20-24"<-as.numeric(gsub(" ","",datosem$"20-24"))
+datosem$"25-44"<-as.numeric(gsub(" ","",datosem$"25-44"))
+datosem$"45-49"<-as.numeric(gsub(" ","",datosem$"45-49"))
+datosem$"50-59"<-as.numeric(gsub(" ","",datosem$"50-59"))
+datosem$"60-64"<-as.numeric(gsub(" ","",datosem$"60-64"))
+datosem$"65+"<-as.numeric(gsub(" ","",datosem$"65+"))
+datosem$Total<-as.numeric(gsub(" ","",datosem$Total))
+```
+GRÁFICAS
+```{r, fig.show='hold'}
+datosleg<-datoseg%>%gather(variable,valor,2:13)
+boxplot(valor~variable,data=datosleg,main="Piquetes vs Edad - General de todos lo años",ylab="Número de piquetes",xlab="Edad",col="green",varwigth=TRUE, outline = FALSE)
+datoslef<-datosef%>%gather(variable,valor,2:13)
+boxplot(valor~variable,data=datoslef,main="Piquetes vs Edad - Femenino de todos lo años",ylab="Número de piquetes",xlab="Edad",col="hotpink",varwigth=TRUE, outline = FALSE)
+datoslem<-datosem%>%gather(variable,valor,2:13)
+boxplot(valor~variable,data=datoslem,main="Piquetes vs Edad - Masculino de todos lo años",ylab="Número de piquetes",xlab="Edad",col="deepskyblue2",varwigth=TRUE, outline = FALSE)
 ```
