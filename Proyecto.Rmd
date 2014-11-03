@@ -6,27 +6,641 @@ Cesar Jimenez 126346"
 date: "Tuesday, October 28, 2014"
 output: pdf_document
 ---
-Cargar los datos y limpiarlos
-
 ```{r}
-#datos por mes (femenino)
-mesfem2003 <- read.csv("~/CVS/Mes/mesfem2003.csv", stringsAsFactors=FALSE)
-mesfem2004 <- read.csv("~/CVS/Mes/mesfem2004.csv", stringsAsFactors=FALSE)
-mesfem2005 <- read.csv("~/CVS/Mes/mesfem2005.csv", stringsAsFactors=FALSE)
-mesfem2006 <- read.csv("~/CVS/Mes/mesfem2006.csv", stringsAsFactors=FALSE)
-mesfem2007 <- read.csv("~/CVS/Mes/mesfem2007.csv", stringsAsFactors=FALSE)
-mesfem2008 <- read.csv("~/CVS/Mes/mesfem2008.csv", stringsAsFactors=FALSE)
-mesfem2009 <- read.csv("~/CVS/Mes/mesfem2009.csv", stringsAsFactors=FALSE)
-mesfem2010 <- read.csv("~/CVS/Mes/mesfem2010.csv", stringsAsFactors=FALSE)
-mesfem2011 <- read.csv("~/CVS/Mes/mesfem2011.csv", stringsAsFactors=FALSE)
-mesfem2012 <- read.csv("~/CVS/Mes/mesfem2012.csv", stringsAsFactors=FALSE)
-mesfem2013 <- read.csv("~/CVS/Mes/mesfem2013.csv", stringsAsFactors=FALSE)
+  library(reshape2)
+  library(tidyr)
+  library(xtable) 
+  library(dplyr)
+  library(plyr)
+  library(tidyr)
+  library(ggplot2)
+  ```
+  Cargar los datos y limpiarlos
+  #######MES
+  Datos mes (Femenino)
+  
+  ```{r,echo=FALSE}
+  #datos por mes (femenino)
+  mesfem2003 <- read.csv("~/CVS/Mes/mesfem2003.csv", stringsAsFactors=FALSE)
+  mesfem2004 <- read.csv("~/CVS/Mes/mesfem2004.csv", stringsAsFactors=FALSE)
+  mesfem2005 <- read.csv("~/CVS/Mes/mesfem2005.csv", stringsAsFactors=FALSE)
+  mesfem2006 <- read.csv("~/CVS/Mes/mesfem2006.csv", stringsAsFactors=FALSE)
+  mesfem2007 <- read.csv("~/CVS/Mes/mesfem2007.csv", stringsAsFactors=FALSE)
+  mesfem2008 <- read.csv("~/CVS/Mes/mesfem2008.csv", stringsAsFactors=FALSE)
+  mesfem2009 <- read.csv("~/CVS/Mes/mesfem2009.csv", stringsAsFactors=FALSE)
+  mesfem2010 <- read.csv("~/CVS/Mes/mesfem2010.csv", stringsAsFactors=FALSE)
+  mesfem2011 <- read.csv("~/CVS/Mes/mesfem2011.csv", stringsAsFactors=FALSE)
+  mesfem2012 <- read.csv("~/CVS/Mes/mesfem2012.csv", stringsAsFactors=FALSE)
+  mesfem2013 <- read.csv("~/CVS/Mes/mesfem2013.csv", stringsAsFactors=FALSE)
+  names(mesfem2003)<-tolower(names(mesfem2003))
+  names(mesfem2004)<-tolower(names(mesfem2004))
+  names(mesfem2005)<-tolower(names(mesfem2005))
+  names(mesfem2006)<-tolower(names(mesfem2006))
+  names(mesfem2007)<-tolower(names(mesfem2007))
+  names(mesfem2008)<-tolower(names(mesfem2008))
+  names(mesfem2009)<-tolower(names(mesfem2009))
+  names(mesfem2010)<-tolower(names(mesfem2010))
+  names(mesfem2011)<-tolower(names(mesfem2011))
+  names(mesfem2012)<-tolower(names(mesfem2012))
+  names(mesfem2013)<-tolower(names(mesfem2013))
+  
+  mesfem2003$tasa.<-NULL
+  mesfem2004$tasa.<-NULL
+  mesfem2005$tasa.<-NULL
+  mesfem2006$tasa.<-NULL
+  mesfem2007$incidencia.<-NULL
+  mesfem2008$incidencia.<-NULL
+  lista<-list(mesfem2003, mesfem2004, mesfem2005, mesfem2006, mesfem2007, mesfem2008, mesfem2009, mesfem2010,mesfem2011, mesfem2012, mesfem2013)
+  datosmf<-ldply(lista,data.frame)
+  periodo<-c()
+  for(i in 2003:2013){
+    for(j in 1:33){
+      periodo<-c(periodo,i)
+    }
+    
+  }
+  datosmf$periodo<-as.factor(periodo)
+  datosmf$ene<-as.numeric(gsub(" ","",datosmf$ene))
+  datosmf$feb<-as.numeric(gsub(" ","",datosmf$feb))
+  datosmf$mar<-as.numeric(gsub(" ","",datosmf$mar))
+  datosmf$abr<-as.numeric(gsub(" ","",datosmf$abr))
+  datosmf$may<-as.numeric(gsub(" ","",datosmf$may))
+  datosmf$jun<-as.numeric(gsub(" ","",datosmf$jun))
+  datosmf$jul<-as.numeric(gsub(" ","",datosmf$jul))
+  datosmf$ago<-as.numeric(gsub(" ","",datosmf$ago))
+  datosmf$sep<-as.numeric(gsub(" ","",datosmf$sep))
+  datosmf$oct<-as.numeric(gsub(" ","",datosmf$oct))
+  datosmf$nov<-as.numeric(gsub(" ","",datosmf$nov))
+  datosmf$dic<-as.numeric(gsub(" ","",datosmf$dic))
+  datosmf$total<-as.numeric(gsub(" ","",datosmf$total))
+  ```
+  Datos mes (masculino)
+  
+  ```{r, echo=FALSE}
+  #datos por mes (femenino)
+  mesmasc2003 <- read.csv("~/CVS/Mes/mesmasc2003.csv", stringsAsFactors=FALSE)
+  mesmasc2004 <- read.csv("~/CVS/Mes/mesmasc2004.csv", stringsAsFactors=FALSE)
+  mesmasc2005 <- read.csv("~/CVS/Mes/mesmasc2005.csv", stringsAsFactors=FALSE)
+  mesmasc2006 <- read.csv("~/CVS/Mes/mesmasc2006.csv", stringsAsFactors=FALSE)
+  mesmasc2007 <- read.csv("~/CVS/Mes/mesmasc2007.csv", stringsAsFactors=FALSE)
+  mesmasc2008 <- read.csv("~/CVS/Mes/mesmasc2008.csv", stringsAsFactors=FALSE)
+  mesmasc2009 <- read.csv("~/CVS/Mes/mesmasc2009.csv", stringsAsFactors=FALSE)
+  mesmasc2010 <- read.csv("~/CVS/Mes/mesmasc2010.csv", stringsAsFactors=FALSE)
+  mesmasc2011 <- read.csv("~/CVS/Mes/mesmasc2011.csv", stringsAsFactors=FALSE)
+  mesmasc2012 <- read.csv("~/CVS/Mes/mesmasc2012.csv", stringsAsFactors=FALSE)
+  mesmasc2013 <- read.csv("~/CVS/Mes/mesmasc2013.csv", stringsAsFactors=FALSE)
+  names(mesmasc2003)<-tolower(names(mesmasc2003))
+  names(mesmasc2004)<-tolower(names(mesmasc2004))
+  names(mesmasc2005)<-tolower(names(mesmasc2005))
+  names(mesmasc2006)<-tolower(names(mesmasc2006))
+  names(mesmasc2007)<-tolower(names(mesmasc2007))
+  names(mesmasc2008)<-tolower(names(mesmasc2008))
+  names(mesmasc2009)<-tolower(names(mesmasc2009))
+  names(mesmasc2010)<-tolower(names(mesmasc2010))
+  names(mesmasc2011)<-tolower(names(mesmasc2011))
+  names(mesmasc2012)<-tolower(names(mesmasc2012))
+  names(mesmasc2013)<-tolower(names(mesmasc2013))
+  
+  mesmasc2003$tasa.<-NULL
+  mesmasc2004$tasa.<-NULL
+  mesmasc2005$tasa.<-NULL
+  mesmasc2006$tasa.<-NULL
+  mesmasc2007$incidencia.<-NULL
+  mesmasc2008$incidencia.<-NULL
+  lista<-list(mesmasc2003, mesmasc2004, mesmasc2005, mesmasc2006, mesmasc2007, mesmasc2008, mesmasc2009, mesmasc2010,mesmasc2011, mesmasc2012, mesmasc2013)
+  datosmm<-ldply(lista,data.frame)
+  periodo<-c()
+  for(i in 2003:2013){
+    for(j in 1:33){
+      periodo<-c(periodo,i)
+    }
+    
+  }
+  datosmm$periodo<-as.factor(periodo)
+  datosmm$ene<-as.numeric(gsub(" ","",datosmm$ene))
+  datosmm$feb<-as.numeric(gsub(" ","",datosmm$feb))
+  datosmm$mar<-as.numeric(gsub(" ","",datosmm$mar))
+  datosmm$abr<-as.numeric(gsub(" ","",datosmm$abr))
+  datosmm$may<-as.numeric(gsub(" ","",datosmm$may))
+  datosmm$jun<-as.numeric(gsub(" ","",datosmm$jun))
+  datosmm$jul<-as.numeric(gsub(" ","",datosmm$jul))
+  datosmm$ago<-as.numeric(gsub(" ","",datosmm$ago))
+  datosmm$sep<-as.numeric(gsub(" ","",datosmm$sep))
+  datosmm$oct<-as.numeric(gsub(" ","",datosmm$oct))
+  datosmm$nov<-as.numeric(gsub(" ","",datosmm$nov))
+  datosmm$dic<-as.numeric(gsub(" ","",datosmm$dic))
+  datosmm$total<-as.numeric(gsub(" ","",datosmm$total))
+  
+  ```
+  Datos mes (general)
+  
+  ```{r, echo=FALSE}
+  #datos por mes (femenino)
+  mesgral2003 <- read.csv("~/CVS/Mes/mesgral2003.csv", stringsAsFactors=FALSE)
+  mesgral2004 <- read.csv("~/CVS/Mes/mesgral2004.csv", stringsAsFactors=FALSE)
+  mesgral2005 <- read.csv("~/CVS/Mes/mesgral2005.csv", stringsAsFactors=FALSE)
+  mesgral2006 <- read.csv("~/CVS/Mes/mesgral2006.csv", stringsAsFactors=FALSE)
+  mesgral2007 <- read.csv("~/CVS/Mes/mesgral2007.csv", stringsAsFactors=FALSE)
+  mesgral2008 <- read.csv("~/CVS/Mes/mesgral2008.csv", stringsAsFactors=FALSE)
+  mesgral2009 <- read.csv("~/CVS/Mes/mesgral2009.csv", stringsAsFactors=FALSE)
+  mesgral2010 <- read.csv("~/CVS/Mes/mesgral2010.csv", stringsAsFactors=FALSE)
+  mesgral2011 <- read.csv("~/CVS/Mes/mesgral2011.csv", stringsAsFactors=FALSE)
+  mesgral2012 <- read.csv("~/CVS/Mes/mesgral2012.csv", stringsAsFactors=FALSE)
+  mesgral2013 <- read.csv("~/CVS/Mes/mesgral2013.csv", stringsAsFactors=FALSE)
+  names(mesgral2003)<-tolower(names(mesgral2003))
+  names(mesgral2004)<-tolower(names(mesgral2004))
+  names(mesgral2005)<-tolower(names(mesgral2005))
+  names(mesgral2006)<-tolower(names(mesgral2006))
+  names(mesgral2007)<-tolower(names(mesgral2007))
+  names(mesgral2008)<-tolower(names(mesgral2008))
+  names(mesgral2009)<-tolower(names(mesgral2009))
+  names(mesgral2010)<-tolower(names(mesgral2010))
+  names(mesgral2011)<-tolower(names(mesgral2011))
+  names(mesgral2012)<-tolower(names(mesgral2012))
+  names(mesgral2013)<-tolower(names(mesgral2013))
+  
+  mesgral2003$tasa.<-NULL
+  mesgral2004$tasa.<-NULL
+  mesgral2005$tasa.<-NULL
+  mesgral2006$tasa.<-NULL
+  mesgral2007$incidencia.<-NULL
+  mesgral2008$incidencia.<-NULL
+  lista<-list(mesgral2003, mesgral2004, mesgral2005, mesgral2006, mesgral2007, mesgral2008, mesgral2009, mesgral2010,mesgral2011, mesgral2012, mesgral2013)
+  datosmg<-ldply(lista,data.frame)
+  periodo<-c()
+  for(i in 2003:2013){
+    for(j in 1:33){
+      periodo<-c(periodo,i)
+    }
+    
+  }
+  datosmg$periodo<-as.factor(periodo)
+  datosmg$ene<-as.numeric(gsub(" ","",datosmg$ene))
+  datosmg$feb<-as.numeric(gsub(" ","",datosmg$feb))
+  datosmg$mar<-as.numeric(gsub(" ","",datosmg$mar))
+  datosmg$abr<-as.numeric(gsub(" ","",datosmg$abr))
+  datosmg$may<-as.numeric(gsub(" ","",datosmg$may))
+  datosmg$jun<-as.numeric(gsub(" ","",datosmg$jun))
+  datosmg$jul<-as.numeric(gsub(" ","",datosmg$jul))
+  datosmg$ago<-as.numeric(gsub(" ","",datosmg$ago))
+  datosmg$sep<-as.numeric(gsub(" ","",datosmg$sep))
+  datosmg$oct<-as.numeric(gsub(" ","",datosmg$oct))
+  datosmg$nov<-as.numeric(gsub(" ","",datosmg$nov))
+  datosmg$dic<-as.numeric(gsub(" ","",datosmg$dic))
+  datosmg$total<-as.numeric(gsub(" ","",datosmg$total))
+  
+  ```
+  ```{r}
+  head(datosmf)
+  head(datosmm)
+  head(datosmg)
 ```
 
-You can also embed plots, for example:
+//////FUENTE
+
+Datos fuente (Femenino)
+
+```{r,echo=FALSE}
+#datos por fuente (femenino)
+fuentefem2003 <- read.csv("~/CVS/Fuente/fuentefem2003.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+fuentefem2004 <- read.csv("~/CVS/Fuente/fuentefem2004.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+fuentefem2005 <- read.csv("~/CVS/Fuente/fuentefem2005.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+fuentefem2006 <- read.csv("~/CVS/Fuente/fuentefem2006.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+fuentefem2007 <- read.csv("~/CVS/Fuente/fuentefem2007.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+fuentefem2008 <- read.csv("~/CVS/Fuente/fuentefem2008.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+fuentefem2009 <- read.csv("~/CVS/Fuente/fuentefem2009.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+fuentefem2010 <- read.csv("~/CVS/Fuente/fuentefem2010.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+fuentefem2011 <- read.csv("~/CVS/Fuente/fuentefem2011.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+fuentefem2012 <- read.csv("~/CVS/Fuente/fuentefem2012.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+fuentefem2013 <- read.csv("~/CVS/Fuente/fuentefem2013.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+```
+En lo datos encontramos fuentes que no están presentes en algunos estados, IMSS-op, DIF, PEMEX, SEDENA, SEMAR y Otras, pero estás se muestra a partir del 2007.
+Cambiamos los estado en lo que no está presente la fuente por NA, para después cambiarlo por el promedio.
+En este caso los datos 0 sí signifcan algo, es por ello que no todo los ceros son datos faltantes.
+```{r,echo=FALSE}
+#IMSS
+m<-c(1,3,6,23,27)
+for(i in 1:5){
+fuentefem2003[m[i],5]<-NA
+fuentefem2004[m[i],5]<-NA
+fuentefem2005[m[i],5]<-NA
+fuentefem2006[m[i],5]<-NA
+fuentefem2007[m[i],5]<-NA
+fuentefem2008[m[i],5]<-NA
+fuentefem2009[m[i],5]<-NA
+fuentefem2010[m[i],5]<-NA
+fuentefem2011[m[i],5]<-NA
+fuentefem2012[m[i],5]<-NA
+fuentefem2013[m[i],5]<-NA
+}
+#DIF
+m<-c(2,3,7,8,11,12,16,17,19,23,24,26,27)
+for(i in 1:13){
+fuentefem2003[m[i],6]<-NA
+fuentefem2004[m[i],6]<-NA
+fuentefem2005[m[i],6]<-NA
+fuentefem2006[m[i],6]<-NA
+fuentefem2007[m[i],6]<-NA
+fuentefem2008[m[i],6]<-NA
+fuentefem2009[m[i],6]<-NA
+fuentefem2010[m[i],6]<-NA
+fuentefem2011[m[i],6]<-NA
+fuentefem2012[m[i],6]<-NA
+fuentefem2013[m[i],6]<-NA
+}
+#PEMEX
+m<-c(1,2,3,5,6,8,10,12,15,16,17,18,22,23,26,29,31,32)
+for(i in 1:18){
+fuentefem2003[m[i],7]<-NA
+fuentefem2004[m[i],7]<-NA
+fuentefem2005[m[i],7]<-NA
+fuentefem2006[m[i],7]<-NA
+fuentefem2007[m[i],7]<-NA
+fuentefem2008[m[i],7]<-NA
+fuentefem2009[m[i],7]<-NA
+fuentefem2010[m[i],7]<-NA
+fuentefem2011[m[i],7]<-NA
+fuentefem2012[m[i],7]<-NA
+fuentefem2013[m[i],7]<-NA
+}
+#SEDENA
+fuentefem2003[23,8]<-NA
+fuentefem2004[23,8]<-NA
+fuentefem2005[23,8]<-NA
+fuentefem2006[23,8]<-NA
+fuentefem2007[23,8]<-NA
+fuentefem2008[23,8]<-NA
+fuentefem2009[23,8]<-NA
+fuentefem2010[23,8]<-NA
+fuentefem2011[23,8]<-NA
+fuentefem2012[23,8]<-NA
+fuentefem2013[23,8]<-NA
+
+#SEMAR
+m<-c(1,5,8,11,13,15,17,19,21,22,24,29,32)
+for(i in 1:13){
+fuentefem2003[m[i],9]<-NA
+fuentefem2004[m[i],9]<-NA
+fuentefem2005[m[i],9]<-NA
+fuentefem2006[m[i],9]<-NA
+fuentefem2007[m[i],9]<-NA
+fuentefem2008[m[i],9]<-NA
+fuentefem2009[m[i],9]<-NA
+fuentefem2010[m[i],9]<-NA
+fuentefem2011[m[i],9]<-NA
+fuentefem2012[m[i],9]<-NA
+fuentefem2013[m[i],9]<-NA
+}
+#Otras
+m<-c(3,16,17)
+for(i in 1:3){
+fuentefem2003[m[i],10]<-NA
+fuentefem2004[m[i],10]<-NA
+fuentefem2005[m[i],10]<-NA
+fuentefem2006[m[i],10]<-NA
+fuentefem2007[m[i],10]<-NA
+fuentefem2008[m[i],10]<-NA
+fuentefem2009[m[i],10]<-NA
+fuentefem2010[m[i],10]<-NA
+fuentefem2011[m[i],10]<-NA
+fuentefem2012[m[i],10]<-NA
+fuentefem2013[m[i],10]<-NA
+}
+```
+```{r,echo=FALSE}
+names(fuentefem2003)<-tolower(names(fuentefem2003))
+names(fuentefem2004)<-tolower(names(fuentefem2004))
+names(fuentefem2005)<-tolower(names(fuentefem2005))
+names(fuentefem2006)<-tolower(names(fuentefem2006))
+names(fuentefem2007)<-tolower(names(fuentefem2007))
+names(fuentefem2008)<-tolower(names(fuentefem2008))
+names(fuentefem2009)<-tolower(names(fuentefem2009))
+names(fuentefem2010)<-tolower(names(fuentefem2010))
+names(fuentefem2011)<-tolower(names(fuentefem2011))
+names(fuentefem2012)<-tolower(names(fuentefem2012))
+names(fuentefem2013)<-tolower(names(fuentefem2013))
+
+names(fuentefem2003)<-gsub("ssa","salud",names(fuentefem2003))
+names(fuentefem2003)<-gsub("sedemar","semar",names(fuentefem2003))
+
+
+lista<-list(fuentefem2003, fuentefem2004, fuentefem2005, fuentefem2006, fuentefem2007, fuentefem2008, fuentefem2009, fuentefem2010,fuentefem2011, fuentefem2012, fuentefem2013)
+datosff<-ldply(lista,data.frame)
+periodo<-c()
+for(i in 2003:2013){
+  for(j in 1:33){
+    periodo<-c(periodo,i)
+  }
+  
+}
+sapply(datosff, function(x) {mean(is.na(x))})
+
+datosff$periodo<-as.factor(periodo)
+datosff$salud<-as.numeric(gsub(" ","",datosff$salud))
+datosff$imss.ord<-as.numeric(gsub(" ","",datosff$imss.ord))
+datosff$issste<-as.numeric(gsub(" ","",datosff$issste))
+datosff$imss.op<-as.numeric(gsub(" ","",datosff$imss.op))
+datosff$dif<-as.numeric(gsub(" ","",datosff$dif))
+datosff$pemex<-as.numeric(gsub(" ","",datosff$pemex))
+datosff$sedena<-as.numeric(gsub(" ","",datosff$sedena))
+datosff$semar<-as.numeric(gsub(" ","",datosff$semar))
+datosff$otras<-as.numeric(gsub(" ","",datosff$otras))
+datosff$total<-as.numeric(gsub(" ","",datosff$total))
+```
+Datos fuente (masculino)
 
 ```{r, echo=FALSE}
-plot(cars)
+#datos por mes (masculino)
+fuentemasc2003 <- read.csv("~/CVS/Fuente/fuentemasc2003.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+fuentemasc2004 <- read.csv("~/CVS/Fuente/fuentemasc2004.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+fuentemasc2005 <- read.csv("~/CVS/Fuente/fuentemasc2005.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+fuentemasc2006 <- read.csv("~/CVS/Fuente/fuentemasc2006.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+fuentemasc2007 <- read.csv("~/CVS/Fuente/fuentemasc2007.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+fuentemasc2008 <- read.csv("~/CVS/Fuente/fuentemasc2008.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+fuentemasc2009 <- read.csv("~/CVS/Fuente/fuentemasc2009.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+fuentemasc2010 <- read.csv("~/CVS/Fuente/fuentemasc2010.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+fuentemasc2011 <- read.csv("~/CVS/Fuente/fuentemasc2011.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+fuentemasc2012 <- read.csv("~/CVS/Fuente/fuentemasc2012.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+fuentemasc2013 <- read.csv("~/CVS/Fuente/fuentemasc2013.csv", stringsAsFactors=FALSE,na.strings="#N/A")
 ```
+```{r,echo=FALSE}
+#IMSS
+m<-c(1,3,6,23,27)
+for(i in 1:5){
+fuentemasc2003[m[i],5]<-NA
+fuentemasc2004[m[i],5]<-NA
+fuentemasc2005[m[i],5]<-NA
+fuentemasc2006[m[i],5]<-NA
+fuentemasc2007[m[i],5]<-NA
+fuentemasc2008[m[i],5]<-NA
+fuentemasc2009[m[i],5]<-NA
+fuentemasc2010[m[i],5]<-NA
+fuentemasc2011[m[i],5]<-NA
+fuentemasc2012[m[i],5]<-NA
+fuentemasc2013[m[i],5]<-NA
+}
+#DIF
+m<-c(2,3,7,8,11,12,16,17,19,23,24,26,27)
+for(i in 1:13){
+fuentemasc2003[m[i],6]<-NA
+fuentemasc2004[m[i],6]<-NA
+fuentemasc2005[m[i],6]<-NA
+fuentemasc2006[m[i],6]<-NA
+fuentemasc2007[m[i],6]<-NA
+fuentemasc2008[m[i],6]<-NA
+fuentemasc2009[m[i],6]<-NA
+fuentemasc2010[m[i],6]<-NA
+fuentemasc2011[m[i],6]<-NA
+fuentemasc2012[m[i],6]<-NA
+fuentemasc2013[m[i],6]<-NA
+}
+#PEMEX
+m<-c(1,2,3,5,6,8,10,12,15,16,17,18,22,23,26,29,31,32)
+for(i in 1:18){
+fuentemasc2003[m[i],7]<-NA
+fuentemasc2004[m[i],7]<-NA
+fuentemasc2005[m[i],7]<-NA
+fuentemasc2006[m[i],7]<-NA
+fuentemasc2007[m[i],7]<-NA
+fuentemasc2008[m[i],7]<-NA
+fuentemasc2009[m[i],7]<-NA
+fuentemasc2010[m[i],7]<-NA
+fuentemasc2011[m[i],7]<-NA
+fuentemasc2012[m[i],7]<-NA
+fuentemasc2013[m[i],7]<-NA
+}
+#SEDENA
+fuentemasc2003[23,8]<-NA
+fuentemasc2004[23,8]<-NA
+fuentemasc2005[23,8]<-NA
+fuentemasc2006[23,8]<-NA
+fuentemasc2007[23,8]<-NA
+fuentemasc2008[23,8]<-NA
+fuentemasc2009[23,8]<-NA
+fuentemasc2010[23,8]<-NA
+fuentemasc2011[23,8]<-NA
+fuentemasc2012[23,8]<-NA
+fuentemasc2013[23,8]<-NA
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+#SEMAR
+m<-c(1,5,8,11,13,15,17,19,21,22,24,29,32)
+for(i in 1:13){
+fuentemasc2003[m[i],9]<-NA
+fuentemasc2004[m[i],9]<-NA
+fuentemasc2005[m[i],9]<-NA
+fuentemasc2006[m[i],9]<-NA
+fuentemasc2007[m[i],9]<-NA
+fuentemasc2008[m[i],9]<-NA
+fuentemasc2009[m[i],9]<-NA
+fuentemasc2010[m[i],9]<-NA
+fuentemasc2011[m[i],9]<-NA
+fuentemasc2012[m[i],9]<-NA
+fuentemasc2013[m[i],9]<-NA
+}
+#Otras
+m<-c(3,16,17)
+for(i in 1:3){
+fuentemasc2003[m[i],10]<-NA
+fuentemasc2004[m[i],10]<-NA
+fuentemasc2005[m[i],10]<-NA
+fuentemasc2006[m[i],10]<-NA
+fuentemasc2007[m[i],10]<-NA
+fuentemasc2008[m[i],10]<-NA
+fuentemasc2009[m[i],10]<-NA
+fuentemasc2010[m[i],10]<-NA
+fuentemasc2011[m[i],10]<-NA
+fuentemasc2012[m[i],10]<-NA
+fuentemasc2013[m[i],10]<-NA
+}
+
+```
+```{r,echo=FALSE}
+names(fuentemasc2003)<-tolower(names(fuentemasc2003))
+names(fuentemasc2004)<-tolower(names(fuentemasc2004))
+names(fuentemasc2005)<-tolower(names(fuentemasc2005))
+names(fuentemasc2006)<-tolower(names(fuentemasc2006))
+names(fuentemasc2007)<-tolower(names(fuentemasc2007))
+names(fuentemasc2008)<-tolower(names(fuentemasc2008))
+names(fuentemasc2009)<-tolower(names(fuentemasc2009))
+names(fuentemasc2010)<-tolower(names(fuentemasc2010))
+names(fuentemasc2011)<-tolower(names(fuentemasc2011))
+names(fuentemasc2012)<-tolower(names(fuentemasc2012))
+names(fuentemasc2013)<-tolower(names(fuentemasc2013))
+
+names(fuentemasc2003)<-gsub("ssa","salud",names(fuentemasc2003))
+names(fuentemasc2003)<-gsub("sedemar","semar",names(fuentemasc2003))
+
+lista<-list(fuentemasc2003, fuentemasc2004, fuentemasc2005, fuentemasc2006, fuentemasc2007, fuentemasc2008, fuentemasc2009, fuentemasc2010,fuentemasc2011, fuentemasc2012, fuentemasc2013)
+datosfm<-ldply(lista,data.frame)
+periodo<-c()
+for(i in 2003:2013){
+  for(j in 1:33){
+    periodo<-c(periodo,i)
+  }
+  
+}
+sapply(datosfm, function(x) {mean(is.na(x))})
+datosfm$periodo<-as.factor(periodo)
+datosfm$salud<-as.numeric(gsub(" ","",datosfm$salud))
+datosfm$imss.ord<-as.numeric(gsub(" ","",datosfm$imss.ord))
+datosfm$issste<-as.numeric(gsub(" ","",datosfm$issste))
+datosfm$imss.op<-as.numeric(gsub(" ","",datosfm$imss.op))
+datosfm$dif<-as.numeric(gsub(" ","",datosfm$dif))
+datosfm$pemex<-as.numeric(gsub(" ","",datosfm$pemex))
+datosfm$sedena<-as.numeric(gsub(" ","",datosfm$sedena))
+datosfm$semar<-as.numeric(gsub(" ","",datosfm$semar))
+datosfm$otras<-as.numeric(gsub(" ","",datosfm$otras))
+datosfm$total<-as.numeric(gsub(" ","",datosfm$total))
+
+```
+Datos fuente (general)
+
+```{r, echo=FALSE}
+#datos por fuente (general)
+fuentegral2003 <- read.csv("~/CVS/Fuente/fuentegral2003.csv", stringsAsFactors=FALSE,na.strings="#N/A")
+fuentegral2004 <- read.csv("~/CVS/Fuente/fuentegral2004.csv", stringsAsFactors=FALSE, na.strings="#N/A")
+fuentegral2005 <- read.csv("~/CVS/Fuente/fuentegral2005.csv", stringsAsFactors=FALSE, na.strings="#N/A")
+fuentegral2006 <- read.csv("~/CVS/Fuente/fuentegral2006.csv", stringsAsFactors=FALSE, na.strings="#N/A")
+fuentegral2007 <- read.csv("~/CVS/Fuente/fuentegral2007.csv", stringsAsFactors=FALSE, na.strings="#N/A")
+fuentegral2008 <- read.csv("~/CVS/Fuente/fuentegral2008.csv", stringsAsFactors=FALSE, na.strings="#N/A")
+fuentegral2009 <- read.csv("~/CVS/Fuente/fuentegral2009.csv", stringsAsFactors=FALSE, na.strings="#N/A")
+fuentegral2010 <- read.csv("~/CVS/Fuente/fuentegral2010.csv", stringsAsFactors=FALSE, na.strings="#N/A")
+fuentegral2011 <- read.csv("~/CVS/Fuente/fuentegral2011.csv", stringsAsFactors=FALSE, na.strings="#N/A")
+fuentegral2012 <- read.csv("~/CVS/Fuente/fuentegral2012.csv", stringsAsFactors=FALSE, na.strings="#N/A")
+fuentegral2013 <- read.csv("~/CVS/Fuente/fuentegral2013.csv", stringsAsFactors=FALSE, na.strings="#N/A")
+```
+```{r,echo=FALSE}
+#IMSS
+m<-c(1,3,6,23,27)
+for(i in 1:5){
+fuentegral2003[m[i],5]<-NA
+fuentegral2004[m[i],5]<-NA
+fuentegral2005[m[i],5]<-NA
+fuentegral2006[m[i],5]<-NA
+fuentegral2007[m[i],5]<-NA
+fuentegral2008[m[i],5]<-NA
+fuentegral2009[m[i],5]<-NA
+fuentegral2010[m[i],5]<-NA
+fuentegral2011[m[i],5]<-NA
+fuentegral2012[m[i],5]<-NA
+fuentegral2013[m[i],5]<-NA
+}
+#DIF
+m<-c(2,3,7,8,11,12,16,17,19,23,24,26,27)
+for(i in 1:13){
+fuentegral2003[m[i],6]<-NA
+fuentegral2004[m[i],6]<-NA
+fuentegral2005[m[i],6]<-NA
+fuentegral2006[m[i],6]<-NA
+fuentegral2007[m[i],6]<-NA
+fuentegral2008[m[i],6]<-NA
+fuentegral2009[m[i],6]<-NA
+fuentegral2010[m[i],6]<-NA
+fuentegral2011[m[i],6]<-NA
+fuentegral2012[m[i],6]<-NA
+fuentegral2013[m[i],6]<-NA
+}
+#PEMEX
+m<-c(1,2,3,5,6,8,10,12,15,16,17,18,22,23,26,29,31,32)
+for(i in 1:18){
+fuentegral2003[m[i],7]<-NA
+fuentegral2004[m[i],7]<-NA
+fuentegral2005[m[i],7]<-NA
+fuentegral2006[m[i],7]<-NA
+fuentegral2007[m[i],7]<-NA
+fuentegral2008[m[i],7]<-NA
+fuentegral2009[m[i],7]<-NA
+fuentegral2010[m[i],7]<-NA
+fuentegral2011[m[i],7]<-NA
+fuentegral2012[m[i],7]<-NA
+fuentegral2013[m[i],7]<-NA
+}
+#SEDENA
+fuentegral2003[23,8]<-NA
+fuentegral2004[23,8]<-NA
+fuentegral2005[23,8]<-NA
+fuentegral2006[23,8]<-NA
+fuentegral2007[23,8]<-NA
+fuentegral2008[23,8]<-NA
+fuentegral2009[23,8]<-NA
+fuentegral2010[23,8]<-NA
+fuentegral2011[23,8]<-NA
+fuentegral2012[23,8]<-NA
+fuentegral2013[23,8]<-NA
+
+#SEMAR
+m<-c(1,5,8,11,13,15,17,19,21,22,24,29,32)
+for(i in 1:13){
+fuentegral2003[m[i],9]<-NA
+fuentegral2004[m[i],9]<-NA
+fuentegral2005[m[i],9]<-NA
+fuentegral2006[m[i],9]<-NA
+fuentegral2007[m[i],9]<-NA
+fuentegral2008[m[i],9]<-NA
+fuentegral2009[m[i],9]<-NA
+fuentegral2010[m[i],9]<-NA
+fuentegral2011[m[i],9]<-NA
+fuentegral2012[m[i],9]<-NA
+fuentegral2013[m[i],9]<-NA
+}
+#Otras
+m<-c(3,16,17)
+for(i in 1:3){
+fuentegral2003[m[i],10]<-NA
+fuentegral2004[m[i],10]<-NA
+fuentegral2005[m[i],10]<-NA
+fuentegral2006[m[i],10]<-NA
+fuentegral2007[m[i],10]<-NA
+fuentegral2008[m[i],10]<-NA
+fuentegral2009[m[i],10]<-NA
+fuentegral2010[m[i],10]<-NA
+fuentegral2011[m[i],10]<-NA
+fuentegral2012[m[i],10]<-NA
+fuentegral2013[m[i],10]<-NA
+}
+
+```
+```{r,echo=FALSE}
+
+names(fuentegral2003)<-tolower(names(fuentegral2003))
+names(fuentegral2004)<-tolower(names(fuentegral2004))
+names(fuentegral2005)<-tolower(names(fuentegral2005))
+names(fuentegral2006)<-tolower(names(fuentegral2006))
+names(fuentegral2007)<-tolower(names(fuentegral2007))
+names(fuentegral2008)<-tolower(names(fuentegral2008))
+names(fuentegral2009)<-tolower(names(fuentegral2009))
+names(fuentegral2010)<-tolower(names(fuentegral2010))
+names(fuentegral2011)<-tolower(names(fuentegral2011))
+names(fuentegral2012)<-tolower(names(fuentegral2012))
+names(fuentegral2013)<-tolower(names(fuentegral2013))
+
+names(fuentegral2003)<-gsub("ssa","salud",names(fuentegral2003))
+names(fuentegral2003)<-gsub("sedemar","semar",names(fuentegral2003))
+
+lista<-list(fuentegral2003, fuentegral2004, fuentegral2005, fuentegral2006, fuentegral2007, fuentegral2008, fuentegral2009, fuentegral2010,fuentegral2011, fuentegral2012, fuentegral2013)
+datosfg<-ldply(lista,data.frame)
+periodo<-c()
+for(i in 2003:2013){
+  for(j in 1:33){
+    periodo<-c(periodo,i)
+  }
+  
+}
+sapply(datosfg, function(x) {mean(is.na(x))})
+datosfg$periodo<-as.factor(periodo)
+datosfg$salud<-as.numeric(gsub(" ","",datosfg$salud))
+datosfg$imss.ord<-as.numeric(gsub(" ","",datosfg$imss.ord))
+datosfg$issste<-as.numeric(gsub(" ","",datosfg$issste))
+datosfg$imss.op<-as.numeric(gsub(" ","",datosfg$imss.op))
+datosfg$dif<-as.numeric(gsub(" ","",datosfg$dif))
+datosfg$pemex<-as.numeric(gsub(" ","",datosfg$pemex))
+datosfg$sedena<-as.numeric(gsub(" ","",datosfg$sedena))
+datosfg$semar<-as.numeric(gsub(" ","",datosfg$semar))
+datosfg$otras<-as.numeric(gsub(" ","",datosfg$otras))
+datosfg$total<-as.numeric(gsub(" ","",datosfg$total))
+```
+```{r}
+head(datosff)
+head(datosfm)
+head(datosfg)
+```
